@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { User } from '../_models/user';
 import { AccountService } from '../_services/account.service';
 
 @Component({
@@ -7,20 +10,22 @@ import { AccountService } from '../_services/account.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  loggedIn: boolean = false;
-  constructor(private accountService : AccountService) { }
+  constructor(private accountService : AccountService,private router: Router) { }
+  isLogined:boolean = false;
+  user?:User | null;
 
   ngOnInit(): void {
-    this.getCurrentUser();
+      this.accountService.currentUser$.subscribe((user)=>{
+      this.user = user;
+      this.isLogined = !!user;
+    });
   }
+
   logout(){
     this.accountService.logout();
-    this.getCurrentUser();
+    this.router.navigateByUrl('/');
   }
-  getCurrentUser(){
-    return this.accountService.currentUser$.subscribe(user=>{
-      this.loggedIn = !!user;
-    });
-  } 
+
+
 
 }
