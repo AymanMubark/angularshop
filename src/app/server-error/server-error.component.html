@@ -1,0 +1,22 @@
+<div class="account section">
+    <div class="container">
+        <h4>Internal server error - refreshing the page will make error disappear! </h4>
+        <ng-container *ngIf="error">
+            <h5 class="text-danger">
+                Error : {{error.message}}
+            </h5>
+            <p class="font-weight-bold">
+                Note: if you are seeing this then Angular probably not to blame
+            </p>
+            <p>What do next?</p>
+            <ol>
+                <li>Open the chrome dev tools</li>
+                <li>Insoect the network tab</li>
+                <li>Check the failing request</li>
+                <li>Examine the request URL - make sure it is correct</li>
+                <p>Following is the the stack trace - this is investigation should start!</p>
+                <code class="mt-5" style="background-color:whitesomke;">{{error.details}}</code>
+            </ol>
+        </ng-container>
+    </div>
+</div>

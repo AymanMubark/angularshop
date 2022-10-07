@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SignupComponent implements OnInit {
   model : any = {};
+  validationErrors : string[] = [];
   constructor(private accountService : AccountService,private router : Router,private toastr : ToastrService) { }
 
   ngOnInit(): void {
@@ -19,9 +20,8 @@ export class SignupComponent implements OnInit {
   register(){
     this.accountService.register(this.model).subscribe((response) => {
       this.router.navigateByUrl('/');
-    },(error)=>{
-      console.log(error);
-      this.toastr.error(error.error.message);
+    },error=>{
+      this.validationErrors = error;
     });
   }
 
