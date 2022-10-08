@@ -24,8 +24,8 @@ export class CheckoutComponent implements OnInit {
   constructor(private accountService: AccountService,private router : Router,private ordersService : OrdersService, private cartService: CartService) { }
 
   ngOnInit(): void {
-    this.loadCart();
     this.loadUser();
+    this.loadCart();
   }
 
   loadCart() {
@@ -47,6 +47,7 @@ export class CheckoutComponent implements OnInit {
 
   addOrder(){
     this.ordersService.addOrder(this.model).subscribe(()=>{
+      localStorage.removeItem('cart');
       this.router.navigateByUrl('/');
     });
   }
