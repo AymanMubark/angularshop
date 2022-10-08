@@ -79,45 +79,30 @@
           <i class="tf-ion-android-cart"></i>
         </a>
         <div class="dropdown-menu cart-dropdown">
-          <!-- Cart Item -->
-          <div class="media">
-            <a routerLink="/product-single">
-              <img class="media-object img- mr-3" src="assets/images/cart-1.jpg" alt="image" />
+         
+          <div *ngFor="let item of cart" class="media">
+            <a routerLink="/product-single/{{item.product.id}}">
+              <img class="media-object img- mr-3" src="{{item.product.productImages[0].imageUrl}}" alt="image" />
             </a>
             <div class="media-body">
-              <h6>Ladies Bag</h6>
+              <h6>{{item.product.name}}</h6>
               <div class="cart-price">
-                <span>1 x</span>
-                <span>1250.00</span>
+                <span>{{item.quantity}} x</span>
+                <span>{{item.product.price + item.quantity}}</span>
               </div>
             </div>
-            <a href="#" class="remove"><i class="tf-ion-close"></i></a>
+            <a [routerLink]="" (click)="delete(item)" class="remove"><i class="tf-ion-close"></i></a>
           </div>
-          <!-- / Cart Item -->
-
-          <!-- Cart Item -->
-          <div class="media">
-            <a routerLink="/product-single">
-              <img class="media-object img-fluid mr-3" src="assets/images/cart-2.jpg" alt="image" />
-            </a>
-            <div class="media-body">
-              <h6>Skinny Jeans</h6>
-              <div class="cart-price">
-                <span>1 x</span>
-                <span>1250.00</span>
-              </div>
-            </div>
-            <a href="#" class="remove"><i class="tf-ion-close"></i></a>
+          <div *ngIf="cart.length < 1">
+            No items in cart
           </div>
-          <!-- / Cart Item -->
-
-          <div class="cart-summary">
+          <div *ngIf="cart.length > 0" class="cart-summary">
             <span class="h6">Total</span>
-            <span class="total-price h6">$1799.00</span>
+            <span class="total-price h6">${{ total }}</span>
 
             <div class="text-center cart-buttons mt-3">
-              <a href="#" class="btn btn-small btn-transparent btn-block">View Cart</a>
-              <a href="#" class="btn btn-small btn-main btn-block">Checkout</a>
+              <a routerLink="/cart" class="btn btn-small btn-transparent btn-block">View Cart</a>
+              <a routerLink="/checkout" class="btn btn-small btn-main btn-block">Checkout</a>
             </div>
           </div>
         </div>

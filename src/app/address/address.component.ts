@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Address } from '../_models/address';
+import { AccountService } from '../_services/account.service';
 
 @Component({
   selector: 'app-address',
@@ -6,10 +8,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./address.component.css']
 })
 export class AddressComponent implements OnInit {
-
-  constructor() { }
+  address?: Address;
+  constructor(private accountService: AccountService) { }
 
   ngOnInit(): void {
+    this.loadAddress();
   }
 
+  loadAddress() {
+    this.accountService.getUserAddress().subscribe(address => {
+      this.address = address;
+    });
+  }
 }

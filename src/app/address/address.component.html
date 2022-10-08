@@ -59,7 +59,14 @@
   
             <div class="card p-4 mt-4">
               <h4 class="card-title">Shipping info <a routerLink="/edit-address" class="float-right text-sm">Edit</a></h4>
-              You have not set up this type of address yet.
+             <div *ngIf="address">
+                <p *ngIf="address.city != ''">      
+                    {{address.details}},{{address.city}},{{address.region}}
+                </p>     
+                <p *ngIf="address.city == ''">
+                    You have not set up this type of address yet.
+                </p>           
+            </div>                
             </div>
           </div>
         </div>

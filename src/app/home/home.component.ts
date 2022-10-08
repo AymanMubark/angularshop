@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Cart } from '../_models/cart';
 import { Product } from '../_models/product';
+import { CartService } from '../_services/cart.service';
 import { ProductsService } from '../_services/products.service';
 
 @Component({
@@ -10,7 +12,7 @@ import { ProductsService } from '../_services/products.service';
 export class HomeComponent implements OnInit {
   products? : Product[];
 
-  constructor(private productsService : ProductsService) { }
+  constructor(private productsService : ProductsService,private cartService : CartService) { }
 
   //Slider settings
   slideConfig = {"slidesToShow": 1, "slidesToScroll": 1} ;
@@ -22,6 +24,15 @@ export class HomeComponent implements OnInit {
     this.productsService.getProducts().subscribe(products=>{
       this.products = products;
     });
+  }
+
+  addToCart(product : Product){
+    let cart : Cart = {
+      id:0,
+      product : product!,
+      quantity :1
+    };    
+    this.cartService.addProduct(cart);
   }
 
 }

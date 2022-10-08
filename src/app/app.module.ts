@@ -20,6 +20,9 @@ import { ServerErrorComponent } from './server-error/server-error.component';
 import { JwtInterceptor } from './_interceptor/jwt.interceptor';
 import { AddressComponent } from './address/address.component';
 import { EditAddressComponent } from './edit-address/edit-address.component';
+import { CartComponent } from './cart/cart.component';
+import { OrdersComponent } from './orders/orders.component';
+import { ProfileDetailsComponent } from './profile-details/profile-details.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,9 @@ import { EditAddressComponent } from './edit-address/edit-address.component';
     ServerErrorComponent,
     AddressComponent,
     EditAddressComponent,
+    CartComponent,
+    OrdersComponent,
+    ProfileDetailsComponent,
   ],
   imports: [
     BrowserModule,

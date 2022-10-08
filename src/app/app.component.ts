@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from './_models/user';
 import { AccountService } from './_services/account.service';
+import { CartService } from './_services/cart.service';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +12,11 @@ export class AppComponent implements OnInit {
   title = 'E-Shop';
   loggedIn :boolean = false;
 
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService,private cartService : CartService) { }
 
   ngOnInit(): void {
     this.setCurrentUser();
-    this.getCurrentUser();
+    this.cartService.setCurrentCart();
   }
 
 
