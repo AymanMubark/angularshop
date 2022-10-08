@@ -47,8 +47,8 @@ export class CheckoutComponent implements OnInit {
 
   addOrder(){
     this.ordersService.addOrder(this.model).subscribe(()=>{
-      localStorage.removeItem('cart');
       this.router.navigateByUrl('/');
+      this.cartService.update([]);
     });
   }
 
