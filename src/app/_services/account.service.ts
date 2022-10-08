@@ -53,7 +53,7 @@ export class AccountService {
 
 
   updateUserAddress(model : any){
-    return this.http.post(this.baseUrl + 'account/address/me',model);
+    return this.http.put(this.baseUrl + 'account/address/me',model);
   }
 
   updateUserProfile(model : any){
