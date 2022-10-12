@@ -23,7 +23,6 @@ export class CartService {
     carts.push(model);
     localStorage.setItem('cart', JSON.stringify(carts));
     this.setCurrentCart();
-    this.toastr.success('Add to cart');
   }
 
   deleteProduct(cartId: number) {

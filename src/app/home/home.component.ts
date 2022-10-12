@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../_models/cart';
+import { PaginationResult } from '../_models/paginationResult';
 import { Product } from '../_models/product';
 import { CartService } from '../_services/cart.service';
 import { ProductsService } from '../_services/products.service';
@@ -11,8 +13,7 @@ import { ProductsService } from '../_services/products.service';
 })
 export class HomeComponent implements OnInit {
   products? : Product[];
-
-  constructor(private productsService : ProductsService,private cartService : CartService) { }
+  constructor(private productsService : ProductsService,private cartService : CartService,private toastr: ToastrService) { }
 
   //Slider settings
   slideConfig = {"slidesToShow": 1, "slidesToScroll": 1} ;
@@ -21,8 +22,9 @@ export class HomeComponent implements OnInit {
   }
 
   loadProducts(){
-    this.productsService.getProducts().subscribe(products=>{
-      this.products = products;
+    this.productsService.getProducts().subscribe(response=>{
+      this.products = response.result;
+      this
     });
   }
 
@@ -33,6 +35,7 @@ export class HomeComponent implements OnInit {
       quantity :1
     };    
     this.cartService.addProduct(cart);
+    this.toastr.success('Add to cart');
   }
 
 }

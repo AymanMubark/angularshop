@@ -23,6 +23,8 @@
     "ngx-slick-carousel": "^0.6.0",
     "ngx-toastr": "^15.2.0",
     "popper.js": "^1.16.1",
+    "primeicons": "^6.0.1",
+    "primeng": "^14.1.2",
     "rxjs": "~7.5.0",
     "slick-carousel": "^1.8.1",
     "tslib": "^2.3.0",

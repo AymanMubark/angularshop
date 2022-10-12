@@ -27,9 +27,6 @@
         <div class="single-product-slider">
           <div class="carousel slide" data-ride="carousel" id="single-product-slider">
             <div class="carousel-inner">
-              <!-- <div class="carousel-item active">
-                  <img src="{{product.productImages[0].imageUrl}}" alt="" class="img-fluid">
-                </div> -->
               <div *ngFor="let productImg of product.productImages;let indexOfelement=index;"
                 class="carousel-item {{indexOfelement== 0? 'active':''}}">
                 <img src="{{productImg.imageUrl}}" alt="" class="img-fluid">
@@ -70,28 +67,26 @@
             </div>
           </form>
 
-          <ng-container *ngFor="let productChoice of product.productChoices">
-            <div *ngIf="productChoice.name == 'Color'" class="color-swatches mt-4 d-flex align-items-center">
+            <div *ngIf="Colors" class="color-swatches mt-4 d-flex align-items-center">
               <span class="font-weight-bold text-capitalize product-meta-title">color:</span>
               <ul class="list-inline mb-0">
-                <li *ngFor="let color of productChoice.choices" class="list-inline-item">
+                <li *ngFor="let color of  Colors" class="list-inline-item">
                   <a routerLink="/product-single" class="bg" attr.style="background:{{color.name}};"></a>
                 </li>
               </ul>
             </div>
 
-          <div *ngIf="productChoice.name == 'Size'"  class="product-size d-flex align-items-center mt-4">
+          <div *ngIf="Sizes"  class="product-size d-flex align-items-center mt-4">
             <span class="font-weight-bold text-capitalize product-meta-title">Size:</span>
             <select class="form-control">
-              <option value="{{size.id}}" *ngFor="let size of productChoice.choices">{{size.name}}</option>
+              <option value="{{size.id}}" *ngFor="let size of Sizes">{{size.name}}</option>
             </select>
           </div>
-          </ng-container>
 
           <div class="products-meta mt-4">
             <div class="product-category d-flex align-items-center">
               <span class="font-weight-bold text-capitalize product-meta-title">Categories :</span>
-              <a href="#">{{product.category.name}} , </a>
+              <a href="#">{{product.category.name}} </a>
             </div>
 
             <div class="product-share mt-5">

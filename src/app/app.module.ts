@@ -25,6 +25,8 @@ import { OrdersComponent } from './orders/orders.component';
 import { ProfileDetailsComponent } from './profile-details/profile-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { SearchComponent } from './search/search.component';
+import { LoadingInterceptor } from './_interceptor/loading.interceptor';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     ProfileDetailsComponent,
     DashboardComponent,
     ForgotPasswordComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,11 +56,12 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    SharedModule,
+    SharedModule
   ],
   providers: [
     {provide : HTTP_INTERCEPTORS , useClass : ErrorInterceptor,multi:true},
-    {provide : HTTP_INTERCEPTORS , useClass : JwtInterceptor,multi:true}
+    {provide : HTTP_INTERCEPTORS , useClass : JwtInterceptor,multi:true},
+    {provide : HTTP_INTERCEPTORS , useClass : LoadingInterceptor,multi:true}
   ],
   bootstrap: [AppComponent]
 })

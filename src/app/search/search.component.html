@@ -1,0 +1,90 @@
+<section class="section products-main">
+
+
+    <div class="container">
+        <form #updateAddressForm="ngForm" (ngSubmit)="search()" action="#">
+            <div class="form-row">
+                <div class="col-lg-9">
+                    <div class="form-group">
+                        <input  [ngModelOptions]="{standalone: true}" [(ngModel)]="model.searchKey" type="search"
+                            class="form-control" id="searchKey" placeholder="search for...">
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="form-group mb-4">
+                        <select (change)="onSortChange($event)" [(ngModel)]="model.sortBy" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="ds">
+                            <option value="">Sort By Recommendtion</option>
+                            <option value="PriceHighToLow">Price: High to Low</option>
+                            <option value="PriceLowToHigh">Price: Low to High</option>
+                            <option value="NewArrivals">New Arrivals</option>
+                            <option value="Rating">Rating: High to Low</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-3">
+                <h5>Categories</h5>
+                <p-tree (onNodeExpand)="categoryExpand($event)" [value]="categoriesTree" selectionMode="single"
+                    [(selection)]="selectedCategory" (onNodeSelect)="nodeSelect($event)"></p-tree>
+                <div class="form-group mt-4">
+                    <h5 class="mb-3">Price: {{rangeValues[0] + ' - ' + rangeValues[1]}}</h5>
+                    <p-slider [(ngModel)]="rangeValues" [step]="1" (onSlideEnd)="changePrice($event)" [max]="10000" [min]="0" [range]="true"></p-slider>
+                </div>
+                <div class="form-group mt-4">
+                    <h5 class="mb-3">Colors</h5>
+                    <div *ngIf="Colors" class="color-swatches mt-4 d-flex align-items-center">
+                        <ul class="list-inline mb-0">
+                          <li *ngFor="let color of  Colors" class="list-inline-item">
+                            <a [routerLink]="" (click)="AddToChoices(color)" class="bg" attr.style="background:{{color.name}};">
+                                <i *ngIf="checkChoice(color)" class="tf-ion-checkmark-circled"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                </div>
+                <div class="form-group mt-4">
+                    <h5 class="mb-3">Sizes</h5>
+                    <div *ngIf="Sizes" class="color-swatches mt-4 d-flex align-items-center">
+                        <ul class="list-inline mb-0">
+                          <li *ngFor="let size of  Sizes" class="list-inline-item">
+                            <button [routerLink]="" (click)="AddToChoices(size)" class="btn mb-3 size-btn" [ngClass]="{'btn-warning': checkChoice(size)}" >{{size.name}}</button>
+                          </li>
+                        </ul>
+                      </div>
+                </div>
+            </div>
+
+            <div *ngFor="let product of products" class="col-lg-3 col-12 col-md-6 col-sm-6 mb-5">
+                <div class="product">
+                    <div class="product-wrap">
+                        <a [routerLink]="['/product-single',product.id]"><img class="img-fluid w-100 mb-3 img-first"
+                                src="{{product.productImages[0].imageUrl}}" alt="product-img" /></a>
+                        <a [routerLink]="['/product-single',product.id]" *ngIf="product.productImages.length > 1"><img
+                                class="img-fluid w-100 mb-3 img-second" src="{{product.productImages[1].imageUrl}}"
+                                alt="product-img" /></a>
+                    </div>
+
+                    <div class="product-hover-overlay">
+                        <a [routerLink]="" (click)="addToCart(product)"><i class="tf-ion-android-cart"
+                                style="color: white;"></i></a>
+                        <a href="#"><i class="tf-ion-ios-heart" style="color: white;"></i></a>
+                    </div>
+
+                    <div class="product-info">
+                        <h2 class="product-title h5 mb-0"><a href="#">{{product.name}}</a></h2>
+                        <span class="price">
+                            ${{product.price}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <p-paginator *ngIf="pagination" (onPageChange)="paginate($event)" [rows]="products?.length!"
+            [totalRecords]="pagination.totalItems" [rowsPerPageOptions]="[50,100,150]"></p-paginator>
+    </div>
+</section>

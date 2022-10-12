@@ -1,6 +1,7 @@
+import { ChoiceCategory } from "./choiceCategory"
 
 export interface Choice {
     id: string
-    priceIncrease: number
     name: string
+    choiceCategory: ChoiceCategory
   }

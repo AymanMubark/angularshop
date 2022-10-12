@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../_models/cart';
+import { Choice } from '../_models/choice';
 import { Product } from '../_models/product';
+import { ProductChoice } from '../_models/productChoice';
 import { CartService } from '../_services/cart.service';
 import { ProductsService } from '../_services/products.service';
 
@@ -13,13 +16,13 @@ import { ProductsService } from '../_services/products.service';
 export class ProductSingleComponent implements OnInit {
   product? : Product;
   productQuantity? : number = 1;
-  constructor(private route: ActivatedRoute,private productsService : ProductsService,private cartService : CartService) { }
+  Colors : Choice[] = [];
+  Sizes : Choice[] =[];
 
+  constructor(private route: ActivatedRoute,private productsService : ProductsService,private cartService : CartService,private toastr : ToastrService) { }
   ngOnInit(): void {
    
     this.route.params.subscribe(params => {
-      console.log(params) //log the entire params object
-      console.log(params['id']) //log the value of id
       this.loadProduct(params['id']);
     });
   }
@@ -27,6 +30,13 @@ export class ProductSingleComponent implements OnInit {
   loadProduct(id:string){
     this.productsService.getProduct(id).subscribe(product=>{
       this.product = product;
+      for (const productChoice of product.productChoices) {
+        if(productChoice.choice.choiceCategory.name == "Color"){
+          this.Colors?.push(productChoice.choice);
+        }else if(productChoice.choice.choiceCategory.name == "Size"){
+          this.Sizes.push(productChoice.choice);
+        }
+      }
     });
   }
   addToCart(){
@@ -36,5 +46,6 @@ export class ProductSingleComponent implements OnInit {
       quantity :this.productQuantity!
     };    
     this.cartService.addProduct(cart);
+    this.toastr.success('Add to cart');
   }
 }

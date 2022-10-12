@@ -12,6 +12,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { OrdersComponent } from './orders/orders.component';
 import { ProductSingleComponent } from './product-single/product-single.component';
 import { ProfileDetailsComponent } from './profile-details/profile-details.component';
+import { SearchComponent } from './search/search.component';
 import { ServerErrorComponent } from './server-error/server-error.component';
 import { SignupComponent } from './signup/signup.component';
 import { AuthGuard } from './_gurads/auth.guard';
@@ -29,6 +30,7 @@ const routes: Routes = [
         { path: 'dashboard', component: DashboardComponent },
     ]
   },
+  { path: 'search', component: SearchComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'product-single/:id', component: ProductSingleComponent},
   { path: 'login', component: LoginComponent },
