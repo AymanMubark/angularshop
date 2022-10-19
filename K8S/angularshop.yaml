@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angularshop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: angularshop
+  template:
+    metadata:
+      labels:
+        app: angularshop
+    spec:
+      containers:
+      - name: angularshop
+        image: csaymandocker/angularshop:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: angularshop
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 4200
+    targetPort: 4200
+  selector:
+    app: angularshop
