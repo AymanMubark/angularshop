@@ -8,8 +8,6 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { ProductSingleComponent } from './product-single/product-single.component';
-import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
 import {  HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckoutComponent } from './checkout/checkout.component';
@@ -35,8 +33,6 @@ import { LoadingInterceptor } from './_interceptor/loading.interceptor';
     FooterComponent,
     HomeComponent,
     ProductSingleComponent,
-    LoginComponent,
-    SignupComponent,
     CheckoutComponent,
     NotFoundComponent,
     ServerErrorComponent,

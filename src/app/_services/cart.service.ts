@@ -1,52 +1,62 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Cart } from '../_models/cart';
+import { CartItem } from '../_models/cartItem';
+import { Product } from '../_models/product';
+import { ProductChoice } from '../_models/productChoice';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  private currentcartSource = new BehaviorSubject<Cart[] | null>(null);
-  currentCart$ = this.currentcartSource.asObservable();
+  baseUrl = environment.apiUrl;
+  private currentCartSource = new BehaviorSubject<Cart | null>(null);
+  currentCart$ = this.currentCartSource.asObservable();
 
+  constructor(private http: HttpClient) { }
 
-  constructor(private toastr : ToastrService) { }
-
-  addProduct(model: Cart) {
-    let carts: Cart[] = [];
-    if (localStorage.getItem('cart')) {
-      carts = JSON.parse(localStorage.getItem('cart')!);
-    }
-    model.id = carts.length + 1;
-    carts.push(model);
-    localStorage.setItem('cart', JSON.stringify(carts));
-    this.setCurrentCart();
-  }
-
-  deleteProduct(cartId: number) {
-    let carts: Cart[] = [];
-    if (localStorage.getItem('cart')) {
-      carts = JSON.parse(localStorage.getItem('cart')!);
-      carts = carts.filter(x => x.id != cartId);
-      localStorage.setItem('cart', JSON.stringify(carts));
-      this.setCurrentCart();
-    }
-  }
-
-  setCurrentCart() {
-    if (localStorage.getItem('cart')) {
-      var cart = JSON.parse(localStorage.getItem('cart')!);
-      this.currentcartSource.next(cart);
-    }
-  }
-  
-  update(cart:Cart[]) {
-    localStorage.removeItem('cart');
-    cart.forEach(element => {
-      this.addProduct(element);     
+  getCart(name: string) {
+    this.http.get<Cart>(this.baseUrl + 'Basket/' + name).subscribe((data) => {
+      this.currentCartSource.next(data);
     });
   }
 
+
+  updateCart() {
+    const cart = this.currentCartSource.value;
+    this.http.post<Cart>(this.baseUrl + 'Basket', cart).subscribe((cart) => {
+      this.currentCartSource.next(cart);
+    });
+  }
+
+  deleteProduct(productId: string) {
+    this.currentCartSource.value!.items = this.currentCartSource.value!.items.filter(x => x.productId != productId);
+    this.updateCart();
+  }
+
+  addProduct(product: Product, choices: ProductChoice[], quanity: number) {
+    var newItem = true;
+    this.currentCartSource.value?.items.forEach((item) => {
+      if (item.choices == JSON.stringify(choices)) {
+        quanity++;
+        item.quantity = quanity;
+        newItem = false;
+      }
+    })
+    if (newItem) {
+      let item: CartItem = {
+        productId: product.id,
+        productName: product?.name,
+        productImageUrl: product.productImages[0].imageUrl,
+        price: product.price,
+        quantity: quanity,
+        choices: JSON.stringify(choices),
+      };
+      this.currentCartSource.value?.items.push(item);
+    }
+    this.updateCart();
+  }
 }

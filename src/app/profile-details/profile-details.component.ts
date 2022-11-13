@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { UserDetails } from '../_models/userDetails';
+import { User } from '../_models/user';
 import { AccountService } from '../_services/account.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { AccountService } from '../_services/account.service';
 })
 export class ProfileDetailsComponent implements OnInit {
   model: any = {};
-  user? :UserDetails;
+  user? :User;
   constructor(private accountService: AccountService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -18,20 +18,15 @@ export class ProfileDetailsComponent implements OnInit {
   }
   updateProfle() {
     console.log(this.model);
-    this.accountService.updateUserProfile(this.model).subscribe(() => {
-      this.toastr.success('Update Profile Succfully');
-    });
+    // this.accountService.updateUserProfile(this.model).subscribe(() => {
+    //   this.toastr.success('Update Profile Succfully');
+    // });
   }
 
   loadUser() {
     this.accountService.currentUser$.subscribe(user => {
-      if (user) {
-        this.accountService.getUserDetails().subscribe(user => {
-          if (user) {
-            this.user = user;
-          }
-        })
-      }
+      if(user)
+    this.user = user;
     })
 }
 }

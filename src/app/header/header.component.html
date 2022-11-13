@@ -80,25 +80,27 @@
         </a>
         <div class="dropdown-menu cart-dropdown">
          
-          <div *ngFor="let item of cart" class="media">
-            <a routerLink="/product-single/{{item.product.id}}">
-              <img class="media-object img- mr-3" src="{{item.product.productImages[0].imageUrl}}" alt="image" />
+          <div *ngFor="let item of cart?.items" class="media">
+            <a routerLink="/product-single/{{item.productId}}">
+              <img class="media-object img- mr-3" src="{{item.productImageUrl}}" alt="image" />
             </a>
             <div class="media-body">
-              <h6>{{item.product.name}}</h6>
+              <h6>{{item.productName}}</h6>
               <div class="cart-price">
                 <span>{{item.quantity}} x</span>
-                <span>{{item.product.price + item.quantity}}</span>
+                <span>{{item.price + item.quantity}}</span>
               </div>
             </div>
-            <a [routerLink]="" (click)="delete(item)" class="remove"><i class="tf-ion-close"></i></a>
+            <a [routerLink]="" (click)="delete(item.productId)" class="remove"><i class="tf-ion-close"></i></a>
           </div>
-          <div *ngIf="cart.length < 1">
+          <div *ngIf="cart">
+
+          <div *ngIf="cart?.items?.length!  < 1">
             No items in cart
           </div>
-          <div *ngIf="cart.length > 0" class="cart-summary">
+          <div *ngIf="cart?.items!.length > 0" class="cart-summary">
             <span class="h6">Total</span>
-            <span class="total-price h6">${{ total }}</span>
+            <span class="total-price h6">${{ cart.totalPrice }}</span>
 
             <div class="text-center cart-buttons mt-3">
               <a routerLink="/cart" class="btn btn-small btn-transparent btn-block">View Cart</a>
@@ -106,14 +108,15 @@
             </div>
           </div>
         </div>
+      </div>
       </li>
 
       <li *ngIf="user === null" class="list-inline-item">
-        <a routerLink="/login" href="#"><i class="tf-ion-log-in"></i></a>
+        <a (click)="logout()" href="#"><i class="tf-ion-log-in"></i></a>
       </li>
       <li *ngIf="user != null" class="list-inline-item">
         <a href="#"><i class="tf-ion-ios-person"></i>
-          {{ user.userName | titlecase }}
+          {{ user.name | titlecase }}
         </a>
       </li>
     </ul>

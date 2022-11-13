@@ -5,6 +5,7 @@ import { Cart } from '../_models/cart';
 import { Choice } from '../_models/choice';
 import { Product } from '../_models/product';
 import { ProductChoice } from '../_models/productChoice';
+import { AccountService } from '../_services/account.service';
 import { CartService } from '../_services/cart.service';
 import { ProductsService } from '../_services/products.service';
 
@@ -14,38 +15,64 @@ import { ProductsService } from '../_services/products.service';
   styleUrls: ['./product-single.component.css']
 })
 export class ProductSingleComponent implements OnInit {
-  product? : Product;
-  productQuantity? : number = 1;
-  Colors : Choice[] = [];
-  Sizes : Choice[] =[];
-
-  constructor(private route: ActivatedRoute,private productsService : ProductsService,private cartService : CartService,private toastr : ToastrService) { }
+  product?: Product;
+  productQuantity?: number = 1;
+  Colors: ProductChoice[] = [];
+  Sizes: ProductChoice[] = [];
+  selectedSize?: ProductChoice;
+  selectedColor?: ProductChoice;
+  constructor(private route: ActivatedRoute, private accountService: AccountService, private productsService: ProductsService, private cartService: CartService, private toastr: ToastrService) { }
   ngOnInit(): void {
-   
+
     this.route.params.subscribe(params => {
       this.loadProduct(params['id']);
     });
   }
 
-  loadProduct(id:string){
-    this.productsService.getProduct(id).subscribe(product=>{
+  loadProduct(id: string) {
+    this.productsService.getProduct(id).subscribe(product => {
       this.product = product;
       for (const productChoice of product.productChoices) {
-        if(productChoice.choice.choiceCategory.name == "Color"){
-          this.Colors?.push(productChoice.choice);
-        }else if(productChoice.choice.choiceCategory.name == "Size"){
-          this.Sizes.push(productChoice.choice);
+        if (productChoice.choice.choiceCategory.name == "Color") {
+          this.Colors?.push(productChoice);
+        } else if (productChoice.choice.choiceCategory.name == "Size") {
+          this.Sizes.push(productChoice);
         }
+      }
+      if (this.product?.productChoices!.filter(ch => ch.choice.choiceCategory.name == "Size")[0]) {
+        this.selectedSize = this.product?.productChoices!.filter(ch => ch.choice.choiceCategory.name == "Size")[0];
+      }
+      if (this.product?.productChoices!.filter(ch => ch.choice.choiceCategory.name == "Color")[0]) {
+        this.selectedColor = this.product?.productChoices!.filter(ch => ch.choice.choiceCategory.name == "Color")[0];
       }
     });
   }
-  addToCart(){
-    let cart : Cart = {
-      id:0,
-      product : this.product!,
-      quantity :this.productQuantity!
-    };    
-    this.cartService.addProduct(cart);
+
+  selectColor(choice: ProductChoice) {
+    this.selectedColor = choice;
+  }
+
+  addToCart() {
+
+    var choices: ProductChoice[] = [];
+
+    if (this.selectedSize) {
+      choices.push(this.selectedSize);
+    } else {
+      if (this.product?.productChoices!.filter(ch => ch.choice.choiceCategory.name == "Size")[0]) {
+        choices.push(this.product?.productChoices!.filter(ch => ch.choice.choiceCategory.name == "Size")[0]);
+      }
+    }
+
+    if (this.selectedColor) {
+      choices.push(this.selectedColor);
+    } else {
+      if (this.product?.productChoices!.filter(ch => ch.choice.choiceCategory.name == "Color")[0]) {
+        choices.push(this.product?.productChoices!.filter(ch => ch.choice.choiceCategory.name == "Color")[0]);
+      }
+    }
+
+    this.cartService.addProduct(this.product!, choices, 1);
     this.toastr.success('Add to cart');
   }
 }

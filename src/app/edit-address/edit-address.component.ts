@@ -18,14 +18,14 @@ export class EditAddressComponent implements OnInit {
   }
 
   loadAddress() {
-    this.accountService.getUserAddress().subscribe(address => {
-      this.address = address;
-    });
+    // this.accountService.getUserAddress().subscribe(address => {
+    //   this.address = address;
+    // });
   }
 
   updateAddres() {
-    this.accountService.updateUserAddress(this.address).subscribe(address => {
-      this.router.navigateByUrl('/address');
-    });
+    // this.accountService.updateUserAddress(this.address).subscribe(address => {
+    //   this.router.navigateByUrl('/address');
+    // });
   }
 }

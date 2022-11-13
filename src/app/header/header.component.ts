@@ -15,29 +15,35 @@ export class HeaderComponent implements OnInit {
   constructor(private accountService: AccountService, private cartService: CartService, private router: Router) { }
   isLogined: boolean = false;
   user?: User | null;
-  cart: Cart[] = [];
-  total: number = 0;
+  cart?: Cart;
 
   ngOnInit(): void {
+    if (window.location.hash) {
+      this.accountService.AuthorizedCallback();
+    }
     this.accountService.currentUser$.subscribe((user) => {
-      this.user = user;
-      this.isLogined = !!user;
-    });
-    this.cartService.currentCart$.subscribe((cart) => {
-      if (cart) {
-        this.cart = cart;
-        this.total = cart.reduce((sum, current) => sum + current.product.price * current.quantity, 0);
+      if (user) {
+        this.user = user;
+        this.isLogined = true;
+        this.cartService.currentCart$.subscribe((cart) => {
+          if (cart)
+            this.cart = cart;
+        });
       }
     });
   }
-  delete(cart: Cart) {
-    this.cartService.deleteProduct(cart.id);
+
+  delete(productId: string) {
+    this.cartService.deleteProduct(productId);
+  }
+
+  login() {
+    this.accountService.login();
+    this.router.navigateByUrl('/');
   }
   logout() {
     this.accountService.logout();
     this.router.navigateByUrl('/');
   }
-
-
 
 }

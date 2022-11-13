@@ -9,7 +9,7 @@ export interface Order {
     email: string
     firstName: string
     lastName: string
-    total: number
+    totalPrice: number
     tax: number
     region: string
     city: string

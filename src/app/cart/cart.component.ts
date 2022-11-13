@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../_models/cart';
+import { User } from '../_models/user';
+import { AccountService } from '../_services/account.service';
 import { CartService } from '../_services/cart.service';
 
 @Component({
@@ -9,40 +11,42 @@ import { CartService } from '../_services/cart.service';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  cart? : Cart[];
-  change : boolean =false;
-  total : number = 0;
-  constructor(private cartService: CartService,private toastr : ToastrService) { }
+  cart?: Cart;
+  user?: User | null;
+  change: boolean = false;
+  constructor(private cartService: CartService, private accountService: AccountService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.loadUser();
     this.loadCart();
   }
 
-  loadCart(){
-    this.cartService.currentCart$.subscribe(cart=>{
-      if(cart){
-        this.cart = cart;
-      this.total = cart .reduce((sum, current) => sum + current.product.price * current.quantity, 0);
-      }
-    })
+  loadUser() {
+    this.accountService.currentUser$.subscribe((user) => {
+      this.user = user;
+    });
   }
 
-  update(){
-    console.log('dsds');
-    if(this.total == this.cart!.reduce((sum, current) => sum + current.product.price * current.quantity, 0)){
-      this.change  = false;
-    }else{
-      this.change  = true;
-    }
-    console.log(this.change);
+  loadCart() {
+    this.cartService.currentCart$.subscribe(cart => {
+      if (cart)
+        this.cart = cart;
+    });
   }
-  delete(cart:Cart){
-      this.cartService.deleteProduct(cart.id);
+
+  update() {
+    this.loadCart();
   }
-  updateCart(){
-    this.cartService.update(this.cart!);  
-    this.total = this.cart!.reduce((sum, current) => sum + current.product.price * current.quantity, 0);
-    this.change  = false;
+
+  delete(productId: string) {
+    this.accountService.currentUser$.subscribe((user) => {
+      this.cartService.deleteProduct(productId);
+    });
+  }
+
+  updateCart() {
+    this.cartService.updateCart();
+    this.change = false;
     this.toastr.success('Update Cart Succesfully');
   }
 }

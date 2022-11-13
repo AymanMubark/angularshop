@@ -19,7 +19,6 @@ export class ProductsService {
   constructor(private http: HttpClient) { }
 
   getProducts(model?: any) {
-    console.log(model);
     let httpParams = new HttpParams();
     if (model) {
       Object.keys(model).forEach(function (key) {
@@ -28,7 +27,7 @@ export class ProductsService {
         }
       });
     }
-    return this.http.get<Product[]>(this.baseUrl + 'products', { observe: 'response', params: httpParams }).pipe(
+    return this.http.get<Product[]>(this.baseUrl + 'Catalog', { observe: 'response', params: httpParams }).pipe(
       map(response => {
         if (response.body)
           this.paginationResult.result = response.body;
@@ -40,7 +39,7 @@ export class ProductsService {
   }
 
   getProduct(id: string): Observable<Product> {
-    return this.http.get<Product>(this.baseUrl + 'products/' + id);
+    return this.http.get<Product>(this.baseUrl + 'Catalog/' + id);
   }
 
   getCategories(id?: string): Observable<Category[]> {

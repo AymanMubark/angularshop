@@ -16,8 +16,8 @@ export class AddressComponent implements OnInit {
   }
 
   loadAddress() {
-    this.accountService.getUserAddress().subscribe(address => {
-      this.address = address;
-    });
+    // this.accountService.getUserAddress().subscribe(address => {
+    //   this.address = address;
+    // });
   }
 }

@@ -1,6 +1,7 @@
-import { OrderDetailAdd } from "./orderDetailadd"
+import { CartItem } from "./cartItem"
 
 export interface orderAdd {
+    userName?: string
     phone?: string
     email?: string
     apartment?: string
@@ -13,5 +14,5 @@ export interface orderAdd {
     details?: string
     zipCode?: string
     note?: string
-    orderDetails?: OrderDetailAdd[]
+    orderDetails?: CartItem[]
   }

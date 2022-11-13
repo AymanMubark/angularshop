@@ -15,16 +15,16 @@ export class OrdersService {
   constructor(private http : HttpClient) { }
 
   addOrder(model : orderAdd) {
-    return this.http.post(this.baseUrl + 'Orders',model);
+    return this.http.post(this.baseUrl + 'Basket/Checkout',model);
   }
 
   getOrderbyId(id : string) :Observable<Order> {
-    return this.http.get<Order>(this.baseUrl + 'orders/' + id);
+    return this.http.get<Order>(this.baseUrl + 'Orders/' + id);
   }
 
 
-  getOrders() :Observable<Order[]> {
-    return this.http.get<Order[]>(this.baseUrl + 'orders/me');
+  getOrders(username :string) :Observable<Order[]> {
+    return this.http.get<Order[]>(this.baseUrl + 'Orders/' + username);
   }
   
 }

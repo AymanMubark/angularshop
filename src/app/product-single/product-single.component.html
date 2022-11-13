@@ -71,15 +71,15 @@
               <span class="font-weight-bold text-capitalize product-meta-title">color:</span>
               <ul class="list-inline mb-0">
                 <li *ngFor="let color of  Colors" class="list-inline-item">
-                  <a routerLink="/product-single" class="bg" attr.style="background:{{color.name}};"></a>
+                  <a (click)="selectColor(color)" class="bg" attr.style="background:{{color.choice.name}};"></a>
                 </li>
               </ul>
             </div>
 
           <div *ngIf="Sizes"  class="product-size d-flex align-items-center mt-4">
             <span class="font-weight-bold text-capitalize product-meta-title">Size:</span>
-            <select class="form-control">
-              <option value="{{size.id}}" *ngFor="let size of Sizes">{{size.name}}</option>
+            <select  [(ngModel)]="selectedSize" class="form-control">
+              <option value="{{size}}" *ngFor="let size of Sizes">{{size.choice.name}}</option>
             </select>
           </div>
 

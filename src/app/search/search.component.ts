@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
-import { Cart } from '../_models/cart';
 import { Product } from '../_models/product';
 import { CategoryTree } from '../_models/categoriesTree';
 import { CartService } from '../_services/cart.service';
@@ -11,6 +10,8 @@ import { ProductSearch } from '../_models/productSearch';
 import { Pagination } from '../_models/paginationResult';
 import { ToastrService } from 'ngx-toastr';
 import { Choice } from '../_models/choice';
+import { AccountService } from '../_services/account.service';
+import { ProductChoice } from '../_models/productChoice';
 
 @Component({
   selector: 'app-search',
@@ -33,7 +34,7 @@ export class SearchComponent implements OnInit {
   Colors: Choice[] = [];
   Sizes: Choice[] = [];
 
-  constructor(private cartService: CartService, private productsService: ProductsService, private toastr: ToastrService) { }
+  constructor(private cartService: CartService, private accountService: AccountService, private productsService: ProductsService, private toastr: ToastrService) { }
 
 
 
@@ -168,13 +169,19 @@ export class SearchComponent implements OnInit {
   }
 
   addToCart(product: Product) {
-    let cart: Cart = {
-      id: 0,
-      product: product!,
-      quantity: 1
-    };
-    this.cartService.addProduct(cart);
+    var choices : ProductChoice[] = [];
+
+    if (product?.productChoices!.filter(ch => ch.choice.choiceCategory.name == "Size")[0]) {
+      choices.push(product?.productChoices!.filter(ch => ch.choice.choiceCategory.name == "Size")[0]);
+    }
+
+    if (product?.productChoices!.filter(ch => ch.choice.choiceCategory.name == "Color")[0].id) {
+      choices.push(product?.productChoices!.filter(ch => ch.choice.choiceCategory.name == "Color")[0]);
+    }
+
+    this.cartService.addProduct(product, choices, 1);
     this.toastr.success('Add to cart');
+
   }
 
 }

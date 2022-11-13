@@ -41,20 +41,20 @@
               </thead>
 
               <tbody *ngIf="cart">
-                <tr *ngFor="let item of cart" class="cart_item">
+                <tr *ngFor="let item of cart?.items" class="cart_item">
                   <td class="product-thumbnail" data-title="Thumbnail">
-                    <a routerLink="/product-single/{{item.product.id}}"><img src="{{item.product.productImages[0].imageUrl}}"
+                    <a routerLink="/product-single/{{item.productId}"><img src="{{item.productImageUrl}}"
                         class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt=""></a>
                   </td>
 
                   <td class="product-name" data-title="Product">
-                    <a href="#">{{item.product.name}}</a>
+                    <a href="#">{{item.productName}}</a>
                   </td>
 
                   <td class="product-price" data-title="Price">
                     <span class="amount"><span class="currencySymbol">
                         <pre wp-pre-tag-3=""></pre>
-                      </span>{{item.product.price}}</span>
+                      </span>{{item.price}}</span>
                   </td>
                   <td class="product-quantity" data-title="Quantity">
                     <div class="quantity">
@@ -67,10 +67,10 @@
                     <span class="amount">
                       <span class="currencySymbol">
                         <pre wp-pre-tag-3=""></pre>
-                      </span>{{item.product.price * item.quantity}}</span>
+                      </span>{{item.price * item.quantity}}</span>
                   </td>
                   <td class="product-remove" data-title="Remove">
-                    <a [routerLink]="" (click)="delete(item)" class="remove" aria-label="Remove this item" data-product_id="30"
+                    <a [routerLink]="" (click)="delete(item.productId)" class="remove" aria-label="Remove this item" data-product_id="30"
                       data-product_sku="">×</a>
                   </td>
                 </tr>
@@ -104,7 +104,7 @@
           <ul class="list-unstyled mb-4">
             <li class="d-flex justify-content-between pb-2 mb-3">
               <h5>Subtotal</h5>
-              <span>${{total}}</span>
+              <span>${{cart?.totalPrice??0}}</span>
             </li>
             <li class="d-flex justify-content-between pb-2 mb-3">
               <h5>Shipping</h5>
@@ -112,7 +112,7 @@
             </li>
             <li class="d-flex justify-content-between pb-2">
               <h5>Total</h5>
-              <span>${{total}}</span>
+              <span>${{cart?.totalPrice??0}}</span>
             </li>
           </ul>
           <a routerLink="/checkout" class="btn btn-main btn-small">Proceed to checkout</a>
